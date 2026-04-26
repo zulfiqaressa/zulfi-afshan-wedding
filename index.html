@@ -177,6 +177,37 @@
   .xbtn{background:none;border:none;cursor:pointer;color:var(--rose);font-size:1rem;padding:0 0.2rem;line-height:1;}
   ::-webkit-scrollbar{width:4px;height:4px;}
   ::-webkit-scrollbar-thumb{background:var(--border);border-radius:100px;}
+
+  /* NEW USER TAG COLOURS */
+  .of{background:#EEF2FF;color:#4338CA;} /* faizan - indigo */
+  .om{background:#FAF5FF;color:#7C3AED;} /* mehwish - violet */
+  .os{background:#F0FDFA;color:#0F766E;} /* seher - teal */
+  .oh{background:#FFFBEB;color:#B45309;} /* hira - amber */
+
+  /* FAMILY GROUP DIVIDER IN FILTER BAR */
+  .fbar-divider{width:1px;background:var(--border);margin:0.2rem 0;flex-shrink:0;align-self:stretch;}
+  .fbar-label{font-size:0.65rem;color:var(--text-muted);letter-spacing:0.07em;text-transform:uppercase;align-self:center;padding:0 0.1rem;white-space:nowrap;}
+
+  /* MOOD BOARD */
+  .mb-search-bar{display:flex;gap:0.65rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center;}
+  .mb-search-inp{flex:1;min-width:160px;padding:0.5rem 0.85rem;border:1px solid var(--border);border-radius:8px;font-family:'Jost',sans-serif;font-size:0.82rem;background:var(--warm-white);color:var(--text-dark);outline:none;}
+  .mb-search-inp:focus{border-color:var(--emerald-light);}
+  .mb-search-sel{padding:0.5rem 0.65rem;border:1px solid var(--border);border-radius:8px;font-family:'Jost',sans-serif;font-size:0.78rem;background:var(--warm-white);color:var(--text-mid);outline:none;cursor:pointer;}
+  .mb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.1rem;margin-bottom:1.5rem;}
+  .mb-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);transition:transform 0.18s,box-shadow 0.18s;}
+  .mb-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px var(--shadow);}
+  .mb-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:3rem;}
+  .mb-body{padding:0.85rem;}
+  .mb-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--text-dark);margin-bottom:0.2rem;line-height:1.3;}
+  .mb-meta{font-size:0.71rem;color:var(--text-muted);margin-bottom:0.45rem;}
+  .mb-notes{font-size:0.75rem;color:var(--text-mid);line-height:1.5;margin-bottom:0.5rem;}
+  .mb-tags{display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center;}
+  .mb-city-tag{font-size:0.63rem;padding:0.12rem 0.5rem;border-radius:100px;background:var(--emerald-pale);color:var(--emerald);border:1px solid rgba(27,67,50,0.15);}
+  .mb-cat-tag{font-size:0.63rem;padding:0.12rem 0.5rem;border-radius:100px;background:var(--gold-pale);color:var(--gold);border:1px solid var(--border);}
+  .mb-add-form{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+  .mb-add-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:0.65rem;align-items:end;}
+  @media(max-width:600px){.mb-add-grid{grid-template-columns:1fr 1fr;}}
+  .mb-fg label{display:block;font-size:0.68rem;color:var(--text-muted);margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.06em;}
 </style>
 </head>
 <body>
@@ -203,6 +234,7 @@
   <button class="tab-btn" onclick="showTab('budget',this)">💰 Budget</button>
   <button class="tab-btn" onclick="showTab('locations',this)">📍 Locations</button>
   <button class="tab-btn" onclick="showTab('vendors',this)">🎵 Vendors</button>
+  <button class="tab-btn" onclick="showTab('moodboard',this)">🎨 Mood Board</button>
 </div>
 
 <!-- CALENDAR -->
@@ -263,10 +295,19 @@
 <!-- EVENTS -->
 <div class="section" id="tab-events">
   <div class="section-header"><h2>Events & Tasks</h2><p>Tick off tasks as you go · Syncs live for everyone</p></div>
-  <div class="fbar">
+  <div class="fbar" style="align-items:center;">
     <button class="fb active" onclick="filterTasks('all',this)">All</button>
-    <button class="fb" onclick="filterTasks('zulfi',this)">Zulfi's</button>
-    <button class="fb" onclick="filterTasks('afshan',this)">Afshan's</button>
+    <div class="fbar-divider"></div>
+    <span class="fbar-label">Zulfi's side</span>
+    <button class="fb" onclick="filterTasks('zulfi',this)">Zulfi</button>
+    <button class="fb" onclick="filterTasks('faizan',this)">Faizan</button>
+    <button class="fb" onclick="filterTasks('mehwish',this)">Mehwish</button>
+    <div class="fbar-divider"></div>
+    <span class="fbar-label">Afshan's side</span>
+    <button class="fb" onclick="filterTasks('afshan',this)">Afshan</button>
+    <button class="fb" onclick="filterTasks('seher',this)">Seher</button>
+    <button class="fb" onclick="filterTasks('hira',this)">Hira</button>
+    <div class="fbar-divider"></div>
     <button class="fb" onclick="filterTasks('both',this)">Joint</button>
   </div>
   <div class="event-cards">
@@ -276,7 +317,7 @@
         <div class="eowner">👰 Afshan's home</div>
       </div>
       <div class="card-pad"><ul class="tasks-list" id="tl-nikah"></ul>
-      <div class="add-row"><input class="add-inp" id="ti-nikah" placeholder="Add Nikah task..." onkeydown="if(event.key==='Enter')addTask('nikah')"><select class="add-sel" id="to-nikah"><option value="zulfi">Zulfi</option><option value="afshan">Afshan</option><option value="both">Both</option></select><button class="btn-add" onclick="addTask('nikah')">+ Add</button></div></div>
+      <div class="add-row"><input class="add-inp" id="ti-nikah" placeholder="Add Nikah task..." onkeydown="if(event.key==='Enter')addTask('nikah')"><select class="add-sel" id="to-nikah"><option value="zulfi">Zulfi</option><option value="faizan">Faizan</option><option value="mehwish">Mehwish</option><option value="afshan">Afshan</option><option value="seher">Seher</option><option value="hira">Hira</option><option value="both">Joint</option></select><button class="btn-add" onclick="addTask('nikah')">+ Add</button></div></div>
     </div>
     <div class="card">
       <div class="event-top">
@@ -284,7 +325,7 @@
         <div class="eowner">🎶 Joint</div>
       </div>
       <div class="card-pad"><ul class="tasks-list" id="tl-mehendi"></ul>
-      <div class="add-row"><input class="add-inp" id="ti-mehendi" placeholder="Add Mehendi task..." onkeydown="if(event.key==='Enter')addTask('mehendi')"><select class="add-sel" id="to-mehendi"><option value="zulfi">Zulfi</option><option value="afshan">Afshan</option><option value="both">Both</option></select><button class="btn-add" onclick="addTask('mehendi')">+ Add</button></div></div>
+      <div class="add-row"><input class="add-inp" id="ti-mehendi" placeholder="Add Mehendi task..." onkeydown="if(event.key==='Enter')addTask('mehendi')"><select class="add-sel" id="to-mehendi"><option value="zulfi">Zulfi</option><option value="faizan">Faizan</option><option value="mehwish">Mehwish</option><option value="afshan">Afshan</option><option value="seher">Seher</option><option value="hira">Hira</option><option value="both">Joint</option></select><button class="btn-add" onclick="addTask('mehendi')">+ Add</button></div></div>
     </div>
     <div class="card">
       <div class="event-top">
@@ -292,7 +333,7 @@
         <div class="eowner">🌿 Joint</div>
       </div>
       <div class="card-pad"><ul class="tasks-list" id="tl-walima"></ul>
-      <div class="add-row"><input class="add-inp" id="ti-walima" placeholder="Add Walima task..." onkeydown="if(event.key==='Enter')addTask('walima')"><select class="add-sel" id="to-walima"><option value="zulfi">Zulfi</option><option value="afshan">Afshan</option><option value="both">Both</option></select><button class="btn-add" onclick="addTask('walima')">+ Add</button></div></div>
+      <div class="add-row"><input class="add-inp" id="ti-walima" placeholder="Add Walima task..." onkeydown="if(event.key==='Enter')addTask('walima')"><select class="add-sel" id="to-walima"><option value="zulfi">Zulfi</option><option value="faizan">Faizan</option><option value="mehwish">Mehwish</option><option value="afshan">Afshan</option><option value="seher">Seher</option><option value="hira">Hira</option><option value="both">Joint</option></select><button class="btn-add" onclick="addTask('walima')">+ Add</button></div></div>
     </div>
   </div>
 </div>
@@ -380,6 +421,68 @@
   </div>
 </div>
 
+<!-- MOOD BOARD -->
+<div class="section" id="tab-moodboard">
+  <div class="section-header"><h2>Mood Board</h2><p>Visual inspiration per event · Search by city & style · Add your own ideas</p></div>
+
+  <!-- Event filter -->
+  <div class="fbar" id="mb-event-fbar">
+    <button class="fb active" onclick="setMbEvent('all',this)">All Events</button>
+    <button class="fb" onclick="setMbEvent('nikah',this)">Nikah</button>
+    <button class="fb" onclick="setMbEvent('mehendi',this)">Mehendi</button>
+    <button class="fb" onclick="setMbEvent('walima',this)">Walima</button>
+  </div>
+
+  <!-- Search + filters -->
+  <div class="mb-search-bar">
+    <input class="mb-search-inp" id="mb-keyword" placeholder="🔍  Search inspiration..." oninput="renderMoodboard()">
+    <select class="mb-search-sel" id="mb-city-filter" onchange="renderMoodboard()">
+      <option value="all">All Cities</option>
+      <option value="Gilgit">📍 Gilgit</option>
+      <option value="Islamabad">📍 Islamabad</option>
+      <option value="Karachi">📍 Karachi</option>
+      <option value="Lahore">📍 Lahore</option>
+      <option value="Online">🌐 Online / Nationwide</option>
+    </select>
+    <select class="mb-search-sel" id="mb-cat-filter" onchange="renderMoodboard()">
+      <option value="all">All Categories</option>
+      <option value="Decor">🎨 Decor</option>
+      <option value="Flowers">🌸 Flowers</option>
+      <option value="Attire">👗 Attire</option>
+      <option value="Food">🍽️ Food</option>
+      <option value="Lighting">🏮 Lighting</option>
+      <option value="Furniture">🛋️ Furniture</option>
+      <option value="Photography">📸 Photography</option>
+      <option value="Henna">🌿 Henna</option>
+    </select>
+  </div>
+
+  <!-- Board grid -->
+  <div class="mb-grid" id="mb-grid"></div>
+
+  <!-- Add inspiration form -->
+  <div class="mb-add-form">
+    <div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.9rem;">+ Add Inspiration</div>
+    <div class="mb-add-grid">
+      <div class="mb-fg"><label>Title / Idea</label><input class="fi" id="mb-inp-title" placeholder="e.g. Marigold garland arch"></div>
+      <div class="mb-fg"><label>Category</label><select class="fi" id="mb-inp-cat">
+        <option>Decor</option><option>Flowers</option><option>Attire</option><option>Food</option>
+        <option>Lighting</option><option>Furniture</option><option>Photography</option><option>Henna</option>
+      </select></div>
+      <div class="mb-fg"><label>City</label><select class="fi" id="mb-inp-city">
+        <option>Gilgit</option><option>Islamabad</option><option>Karachi</option><option>Lahore</option><option>Online</option>
+      </select></div>
+      <div class="mb-fg"><label>Event</label><select class="fi" id="mb-inp-ev">
+        <option value="mehendi">Mehendi</option><option value="nikah">Nikah</option><option value="walima">Walima</option>
+      </select></div>
+      <button class="btn-add" onclick="addMbItem()" style="height:38px;padding:0 1rem;">+ Add</button>
+    </div>
+    <div style="margin-top:0.75rem;">
+      <div class="mb-fg"><label>Notes / Where to find</label><input class="fi" id="mb-inp-notes" placeholder="e.g. Available from Gilgit bazaar, approx PKR 2,000 — or search on Daraz" style="width:100%;"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Firebase SDKs loaded before any script runs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -447,14 +550,43 @@ const DEFAULTS = {
     {name:'Nikah Registrar / Local Council',role:'Official Nikah registration · Ghizer',contact:"Afshan's family to coordinate",status:'pending'},
   ],
   guests:[],
-  dates:{nikah:'2025-09-01',mehendi:'2025-09-04',walima:'2025-09-05'}
+  dates:{nikah:'2025-09-01',mehendi:'2025-09-04',walima:'2025-09-05'},
+  moodboard:{
+    nikah:[
+      {title:'Floral Garlands & Marigold Strings',category:'Flowers',city:'Gilgit',notes:'Locally sourced marigold and rose garlands from Gilgit bazaar — budget-friendly and beautiful'},
+      {title:'Classic White Sherwani',category:'Attire',city:'Islamabad',notes:'Tailored Nikah sherwani — F-7 Markaz has excellent tailors, order 6 weeks ahead'},
+      {title:'Acoustic Naat & Hamd',category:'Decor',city:'Gilgit',notes:'Traditional ambiance with local Naat reciters — sets a serene, spiritual tone for the ceremony'},
+      {title:'Intimate Seating with Floor Cushions',category:'Furniture',city:'Gilgit',notes:'Diwan-style seating for family elders — comfortable and traditional'},
+    ],
+    mehendi:[
+      {title:'Marigold & Bougainvillea Arch',category:'Flowers',city:'Gilgit',notes:'Vibrant orange and pink flowers — available from Gilgit flower market near Ittehad Chowk, PKR 3–5k'},
+      {title:'Hanging Floral Curtains',category:'Decor',city:'Islamabad',notes:'Cascading rose string curtains for backdrop — popular at Islamabad events, can ship or bring up'},
+      {title:'Moroccan Glass Lanterns',category:'Lighting',city:'Gilgit',notes:'Colourful lanterns available at local bazaars or Daraz — mix of red, orange, yellow for Mehndi vibe'},
+      {title:'Boho Floor Cushion Seating',category:'Furniture',city:'Islamabad',notes:'Embroidered floor cushions with dhurrie rugs — rental in Islamabad or purchase from Lok Virsa market'},
+      {title:'Bridal Mehndi — Arabic & Pakistani Patterns',category:'Henna',city:'Gilgit',notes:'Book a henna artist 2–3 weeks in advance — traditional full-hand patterns, PKR 3–6k'},
+      {title:'Colourful Phulkari Dupattas as Decor',category:'Decor',city:'Islamabad',notes:'Hang vibrant Phulkari dupattas as ceiling/wall decor — can source from Liberty Lahore or Islamabad Sunday market'},
+      {title:'Traditional Pakistani Snacks Spread',category:'Food',city:'Gilgit',notes:'Samosas, pakoras, chaat, biryani — local caterers in Gilgit can handle full Mehndi spread'},
+      {title:'Mehndi Event Photography',category:'Photography',city:'Gilgit',notes:'Candid shots of henna application, dancing, and decor — book local Gilgit photographer at least 1 month ahead'},
+      {title:'Fairy Lights & Edison Bulb Strings',category:'Lighting',city:'Online',notes:'String lights for canopy/ceiling — order from Daraz for delivery, set the mood for evening Bazam'},
+      {title:'Coloured Ceramic Plate Wall Display',category:'Decor',city:'Islamabad',notes:'Handpainted plates as wall decor — available at Islamabad Sunday Bazaar or F-6 craft shops'},
+    ],
+    walima:[
+      {title:'White & Gold Floral Centerpieces',category:'Flowers',city:'Gilgit',notes:'Tall white roses + gold accents for banquet tables — coordinate with venue florist at Serena'},
+      {title:'Crystal & LED Chandelier Effect',category:'Lighting',city:'Islamabad',notes:'Elegant pendant lighting for banquet hall — can rent from Islamabad event companies'},
+      {title:'Formal Banquet Table Settings',category:'Furniture',city:'Gilgit',notes:'Serena Hotel provides premium table linen, cutlery and settings — confirm with their events team'},
+      {title:'Grand Walima Photography + Cinematic Video',category:'Photography',city:'Gilgit',notes:'8–10 hours coverage, same-day edit reel — book professional videographer 2 months ahead'},
+      {title:'Bridal Walima Formal Outfit',category:'Attire',city:'Islamabad',notes:'Elegant formal lehnga or gown — book 2 months ahead from Islamabad designers (Elan, Sana Safinaz)'},
+      {title:'Grand Traditional Feast',category:'Food',city:'Gilgit',notes:'500 guests — full spread: Biryani, Pulao, Korma, Naan, Raita, Kheer. Get quotes from Serena + 2 local caterers'},
+      {title:'Draping & Fabric Decor',category:'Decor',city:'Islamabad',notes:'Ivory and champagne fabric draping for ceiling and walls — event decorators in Islamabad can deliver to Gilgit'},
+    ]
+  }
 };
 
 // ════════════════════════════════
 // STATE & DB
 // ════════════════════════════════
 let S = JSON.parse(JSON.stringify(DEFAULTS));
-let db = null, guestFilt = 'all';
+let db = null, guestFilt = 'all', mbEventFilt = 'all';
 
 // ════════════════════════════════
 // INIT FIREBASE — scripts loaded at bottom of body so firebase is always defined
@@ -466,11 +598,12 @@ try {
   db.ref('wedding').on('value', snap => {
     const d = snap.val();
     if (d) {
-      S.tasks   = d.tasks   || DEFAULTS.tasks;
-      S.guests  = d.guests  ? (Array.isArray(d.guests)  ? d.guests  : Object.values(d.guests))  : [];
-      S.budget  = d.budget  || DEFAULTS.budget;
-      S.vendors = d.vendors ? (Array.isArray(d.vendors) ? d.vendors : Object.values(d.vendors)) : DEFAULTS.vendors;
-      S.dates   = d.dates   || DEFAULTS.dates;
+      S.tasks     = d.tasks     || DEFAULTS.tasks;
+      S.guests    = d.guests    ? (Array.isArray(d.guests)  ? d.guests  : Object.values(d.guests))  : [];
+      S.budget    = d.budget    || DEFAULTS.budget;
+      S.vendors   = d.vendors   ? (Array.isArray(d.vendors) ? d.vendors : Object.values(d.vendors)) : DEFAULTS.vendors;
+      S.dates     = d.dates     || DEFAULTS.dates;
+      S.moodboard = d.moodboard || DEFAULTS.moodboard;
     } else {
       push(); // first time — seed defaults to Firebase
     }
@@ -502,7 +635,7 @@ function push() {
   if (!db) { localStorage.setItem('zulfi_afshan_data', JSON.stringify(S)); showSync('synced','✓ Saved locally'); return; }
   showSync('syncing','⏳ Syncing...');
   db.ref('wedding').set({
-    tasks:S.tasks, guests:S.guests, budget:S.budget, vendors:S.vendors, dates:S.dates
+    tasks:S.tasks, guests:S.guests, budget:S.budget, vendors:S.vendors, dates:S.dates, moodboard:S.moodboard
   }).then(()=>showSync('synced','✓ Saved & synced'));
 }
 
@@ -517,7 +650,7 @@ function showSync(type, msg) {
 // RENDER ALL
 // ════════════════════════════════
 function renderAll() {
-  renderTasks(); renderGuests(guestFilt); renderBudget(); renderVendors(); updateCountdown();
+  renderTasks(); renderGuests(guestFilt); renderBudget(); renderVendors(); updateCountdown(); renderMoodboard();
 }
 
 // ════════════════════════════════
@@ -571,14 +704,17 @@ function updateCountdown() {
 // ════════════════════════════════
 // TASKS
 // ════════════════════════════════
+const OWNER_CLASS={zulfi:'oz',afshan:'oa',both:'ob',faizan:'of',mehwish:'om',seher:'os',hira:'oh'};
+const OWNER_LABEL={zulfi:'Zulfi',afshan:'Afshan',both:'Joint',faizan:'Faizan',mehwish:'Mehwish',seher:'Seher',hira:'Hira'};
+
 function renderTasks(ownerFilt) {
   ['nikah','mehendi','walima'].forEach(ev=>{
     const ul=document.getElementById('tl-'+ev); ul.innerHTML='';
     (S.tasks[ev]||[]).forEach((t,i)=>{
       const li=document.createElement('li'); li.className='ti'; li.dataset.owner=t.owner;
       if(ownerFilt&&ownerFilt!=='all'&&t.owner!==ownerFilt) li.style.display='none';
-      const tc=t.owner==='zulfi'?'oz':t.owner==='afshan'?'oa':'ob';
-      const ol=t.owner.charAt(0).toUpperCase()+t.owner.slice(1);
+      const tc=OWNER_CLASS[t.owner]||'ob';
+      const ol=OWNER_LABEL[t.owner]||(t.owner.charAt(0).toUpperCase()+t.owner.slice(1));
       li.innerHTML=`<input type="checkbox" class="tchk" ${t.done?'checked':''} onchange="toggleTask('${ev}',${i},this.checked)"><span class="ttxt ${t.done?'done':''}">${t.text}</span><span class="otag ${tc}">${ol}</span><button class="xbtn" onclick="removeTask('${ev}',${i})">×</button>`;
       ul.appendChild(li);
     });
@@ -712,6 +848,92 @@ function showTab(name,btn) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
+}
+
+// ════════════════════════════════
+// MOOD BOARD
+// ════════════════════════════════
+const MB_EMOJI={Decor:'🎨',Flowers:'🌸',Attire:'👗',Food:'🍽️',Lighting:'🏮',Furniture:'🛋️',Photography:'📸',Henna:'🌿'};
+const MB_BG={
+  Decor:'linear-gradient(135deg,#FF9A9E 0%,#FAD0C4 100%)',
+  Flowers:'linear-gradient(135deg,#F6D365 0%,#FDA085 100%)',
+  Attire:'linear-gradient(135deg,#A18CD1 0%,#FBC2EB 100%)',
+  Food:'linear-gradient(135deg,#FEB692 0%,#EA5455 100%)',
+  Lighting:'linear-gradient(135deg,#F7971E 0%,#FFD200 100%)',
+  Furniture:'linear-gradient(135deg,#96DEDA 0%,#50C9C3 100%)',
+  Photography:'linear-gradient(135deg,#667EEA 0%,#764BA2 100%)',
+  Henna:'linear-gradient(135deg,#11998E 0%,#38EF7D 100%)',
+};
+
+function setMbEvent(ev,btn) {
+  document.querySelectorAll('#mb-event-fbar .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  mbEventFilt=ev;
+  renderMoodboard();
+}
+
+function renderMoodboard() {
+  const grid=document.getElementById('mb-grid');
+  if(!grid) return;
+  const keyword=(document.getElementById('mb-keyword')?.value||'').toLowerCase();
+  const city=document.getElementById('mb-city-filter')?.value||'all';
+  const cat=document.getElementById('mb-cat-filter')?.value||'all';
+
+  let items=[];
+  ['nikah','mehendi','walima'].forEach(ev=>{
+    ((S.moodboard||{})[ev]||[]).forEach((item,i)=>items.push({...item,event:ev,idx:i}));
+  });
+
+  if(mbEventFilt!=='all') items=items.filter(it=>it.event===mbEventFilt);
+  if(city!=='all')         items=items.filter(it=>it.city===city);
+  if(cat!=='all')          items=items.filter(it=>it.category===cat);
+  if(keyword)              items=items.filter(it=>(it.title+' '+(it.notes||'')).toLowerCase().includes(keyword));
+
+  if(!items.length){
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1;">No inspiration items match — try different filters or add one below!</div>';
+    return;
+  }
+
+  grid.innerHTML=items.map(it=>{
+    const evClass=`b-${it.event}`;
+    const evLabel=it.event.charAt(0).toUpperCase()+it.event.slice(1);
+    const bg=MB_BG[it.category]||'linear-gradient(135deg,var(--emerald),var(--emerald-mid))';
+    const em=MB_EMOJI[it.category]||'✨';
+    return `<div class="mb-card">
+      <div class="mb-img" style="background:${bg}">${em}</div>
+      <div class="mb-body">
+        <div class="mb-title">${it.title}</div>
+        <div class="mb-meta">${it.category} · ${it.city}</div>
+        ${it.notes?`<div class="mb-notes">${it.notes}</div>`:''}
+        <div class="mb-tags">
+          <span class="ebadge ${evClass}" style="font-size:0.63rem;padding:0.18rem 0.55rem;">${evLabel}</span>
+          <span class="mb-city-tag">${it.city}</span>
+          <span class="mb-cat-tag">${it.category}</span>
+        </div>
+        <button class="xbtn" style="margin-top:0.6rem;font-size:0.75rem;" onclick="removeMbItem('${it.event}',${it.idx})">× Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addMbItem() {
+  const title=document.getElementById('mb-inp-title').value.trim();
+  if(!title) return;
+  const category=document.getElementById('mb-inp-cat').value;
+  const city=document.getElementById('mb-inp-city').value;
+  const ev=document.getElementById('mb-inp-ev').value;
+  const notes=document.getElementById('mb-inp-notes').value.trim();
+  if(!S.moodboard) S.moodboard={nikah:[],mehendi:[],walima:[]};
+  if(!S.moodboard[ev]) S.moodboard[ev]=[];
+  S.moodboard[ev].push({title,category,city,notes});
+  document.getElementById('mb-inp-title').value='';
+  document.getElementById('mb-inp-notes').value='';
+  renderMoodboard(); push();
+}
+
+function removeMbItem(ev,i) {
+  S.moodboard[ev].splice(i,1);
+  renderMoodboard(); push();
 }
 </script>
 </body>
