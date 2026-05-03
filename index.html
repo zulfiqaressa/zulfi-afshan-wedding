@@ -30,9 +30,13 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--dark);}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
 /* ── HERO ── */
-.hero{position:relative;height:100vh;min-height:580px;overflow:hidden;display:flex;align-items:flex-end;}
-.hero-collage{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:1fr 1fr;gap:3px;}
-.hero-collage img{width:100%;height:100%;object-fit:cover;object-position:center center;}
+.hero{position:relative;height:100vh;min-height:580px;overflow:hidden;display:flex;align-items:flex-end;background:#111;}
+.hero-slides{position:absolute;inset:0;}
+.hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:0;transition:opacity 1.4s ease;}
+.hero-slide.active{opacity:1;}
+.hero-dots{position:absolute;bottom:1.75rem;left:50%;transform:translateX(-50%);display:flex;gap:0.55rem;z-index:3;}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.35);border:none;padding:0;cursor:pointer;transition:background 0.3s,transform 0.3s;}
+.hero-dot.active{background:#fff;transform:scale(1.25);}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,6,2,0.88) 0%,rgba(10,6,2,0.25) 55%,transparent 100%);}
 .hero-content{position:relative;z-index:2;padding:4rem 3rem;width:100%;}
 .hero-eyebrow{font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold-light);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
@@ -87,14 +91,20 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--dark);}
 
 /* ── GALLERY ── */
 .gallery-section{padding:5.5rem 3rem;background:var(--warm);}
-.gallery-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:270px;gap:5px;margin-top:2.5rem;}
-@media(max-width:768px){.gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}}
-.gallery-item{overflow:hidden;position:relative;cursor:pointer;}
-.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;}
-.gallery-item:hover img{transform:scale(1.05);}
-.gallery-item.tall{grid-row:span 2;}
-.gallery-cap{position:absolute;bottom:0;left:0;right:0;padding:0.85rem 1rem;background:linear-gradient(to top,rgba(0,0,0,0.65),transparent);color:#fff;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.3s;}
-.gallery-item:hover .gallery-cap{opacity:1;}
+.gallery-slider-wrap{position:relative;margin-top:2.5rem;overflow:hidden;}
+.gallery-slider{display:flex;gap:6px;transition:transform 0.5s cubic-bezier(.4,0,.2,1);}
+.gallery-slide{flex:0 0 calc(50% - 3px);height:320px;position:relative;overflow:hidden;border-radius:6px;cursor:pointer;}
+@media(max-width:768px){.gallery-slide{flex:0 0 calc(100% - 6px);}}
+.gallery-slide img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;}
+.gallery-slide:hover img{transform:scale(1.04);}
+.gallery-cap{position:absolute;bottom:0;left:0;right:0;padding:0.85rem 1rem;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);color:#fff;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.3s;}
+.gallery-slide:hover .gallery-cap{opacity:1;}
+.gallery-nav{display:flex;justify-content:center;gap:0.75rem;margin-top:1.25rem;align-items:center;}
+.gnav-btn{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--border);background:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;color:var(--dark);}
+.gnav-btn:hover{background:var(--dark);color:#fff;border-color:var(--dark);}
+.gnav-dots{display:flex;gap:0.4rem;align-items:center;}
+.gnav-dot{width:6px;height:6px;border-radius:50%;background:var(--border);border:none;padding:0;cursor:pointer;transition:background 0.2s,transform 0.2s;}
+.gnav-dot.active{background:var(--dark);transform:scale(1.3);}
 
 /* ── PLANNER DIVIDER ── */
 .planner-divider{padding:3rem 3rem;background:#fff;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
@@ -354,15 +364,15 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-collage">
-    <img src="IMG_2522.jpeg" alt="Oslo · Norway">
-    <img src="IMG_3680.jpeg" alt="Swiss Alps · Switzerland">
-    <img src="IMG_3861.jpeg" alt="Barcelona · Spain">
-    <img src="IMG_4259.JPG"  alt="Germany">
-    <img src="IMG_4290.jpeg" alt="Paris · France">
-    <img src="IMG_4366.jpeg" alt="Brussels · Belgium">
-    <img src="IMG_4450.jpeg" alt="Summer festival">
-    <img src="IMG_8564.jpeg" alt="North Macedonia">
+  <div class="hero-slides">
+    <img class="hero-slide active" src="IMG_2522.jpeg" alt="Oslo · Norway">
+    <img class="hero-slide" src="IMG_3680.jpeg" alt="Swiss Alps · Switzerland">
+    <img class="hero-slide" src="IMG_3861.jpeg" alt="Barcelona · Spain">
+    <img class="hero-slide" src="IMG_4259.JPG"  alt="Germany">
+    <img class="hero-slide" src="IMG_4290.jpeg" alt="Paris · France">
+    <img class="hero-slide" src="IMG_4366.jpeg" alt="Brussels · Belgium">
+    <img class="hero-slide" src="IMG_4450.jpeg" alt="Summer festival">
+    <img class="hero-slide" src="IMG_8564.jpeg" alt="North Macedonia">
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -374,6 +384,7 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
       <div class="hero-date-item"><strong>05 Sep</strong>Walima · Gilgit</div>
     </div>
   </div>
+  <div class="hero-dots" id="hero-dots"></div>
 </div>
 
 <!-- COUNTDOWN -->
@@ -444,41 +455,47 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
   <div class="section-eyebrow">Our Memories</div>
   <div class="about-heading" style="margin-bottom:0.35rem;">Together, always.</div>
   <div style="font-size:0.82rem;color:var(--muted);margin-bottom:2rem;">From Ohrid to Skopje — snapshots of us.</div>
-  <div class="gallery-grid">
-    <div class="gallery-item tall">
-      <img src="IMG_2522.jpeg" alt="Akershus Fortress · Oslo">
-      <div class="gallery-cap">Akershus Fortress · Oslo</div>
-    </div>
-    <div class="gallery-item">
-      <img src="IMG_3680.jpeg" alt="Golden hour · Swiss Alps">
-      <div class="gallery-cap">Golden hour · Swiss Alps</div>
-    </div>
-    <div class="gallery-item">
-      <img src="IMG_3861.jpeg" alt="Camp Nou · Barcelona">
-      <div class="gallery-cap">Camp Nou · Barcelona</div>
-    </div>
-    <div class="gallery-item">
-      <img src="IMG_4259.JPG" alt="A night to remember · Germany">
-      <div class="gallery-cap">A night to remember · Germany</div>
-    </div>
-    <div class="gallery-item">
-      <img src="IMG_4290.jpeg" alt="Rainy days · Paris">
-      <div class="gallery-cap">Rainy days · Paris</div>
-    </div>
-    <div class="gallery-item">
-      <img src="IMG_4366.jpeg" alt="All aboard · Brussels">
-      <div class="gallery-cap">All aboard · Brussels</div>
-    </div>
-    <div class="gallery-item">
-      <img src="IMG_4450.jpeg" alt="Summer vibes · Europe">
-      <div class="gallery-cap">Summer vibes · Europe</div>
-    </div>
-    <div class="gallery-item">
-      <img src="IMG_8564.jpeg" alt="Old Town · North Macedonia">
-      <div class="gallery-cap">Old Town · North Macedonia</div>
+  <div class="gallery-slider-wrap" id="gallery-slider-wrap">
+    <div class="gallery-slider" id="gallery-slider">
+      <div class="gallery-slide">
+        <img src="IMG_2522.jpeg" alt="Akershus Fortress · Oslo">
+        <div class="gallery-cap">Akershus Fortress · Oslo</div>
+      </div>
+      <div class="gallery-slide">
+        <img src="IMG_3680.jpeg" alt="Golden hour · Swiss Alps">
+        <div class="gallery-cap">Golden hour · Swiss Alps</div>
+      </div>
+      <div class="gallery-slide">
+        <img src="IMG_3861.jpeg" alt="Camp Nou · Barcelona">
+        <div class="gallery-cap">Camp Nou · Barcelona</div>
+      </div>
+      <div class="gallery-slide">
+        <img src="IMG_4259.JPG" alt="A night to remember · Germany">
+        <div class="gallery-cap">A night to remember · Germany</div>
+      </div>
+      <div class="gallery-slide">
+        <img src="IMG_4290.jpeg" alt="Rainy days · Paris">
+        <div class="gallery-cap">Rainy days · Paris</div>
+      </div>
+      <div class="gallery-slide">
+        <img src="IMG_4366.jpeg" alt="All aboard · Brussels">
+        <div class="gallery-cap">All aboard · Brussels</div>
+      </div>
+      <div class="gallery-slide">
+        <img src="IMG_4450.jpeg" alt="Summer vibes · Europe">
+        <div class="gallery-cap">Summer vibes · Europe</div>
+      </div>
+      <div class="gallery-slide">
+        <img src="IMG_8564.jpeg" alt="Old Town · North Macedonia">
+        <div class="gallery-cap">Old Town · North Macedonia</div>
+      </div>
     </div>
   </div>
-</div>
+  <div class="gallery-nav">
+    <button class="gnav-btn" onclick="gSlide(-1)" aria-label="Previous">&#8592;</button>
+    <div class="gnav-dots" id="gnav-dots"></div>
+    <button class="gnav-btn" onclick="gSlide(1)" aria-label="Next">&#8594;</button>
+  </div>
 
 <!-- PLANNER DIVIDER -->
 <div class="planner-divider" id="planner-sec">
@@ -867,7 +884,7 @@ let S = {
   locations: JSON.parse(JSON.stringify(DEFAULT_LOCATIONS)),
   moodboard: JSON.parse(JSON.stringify(DEFAULT_MOODBOARD)),
   activity: [],
-  dates: {nikah:"2025-09-01",mehendi:"2025-09-04",walima:"2025-09-05"}
+  dates: {nikah:"2026-09-01",mehendi:"2026-09-04",walima:"2026-09-05"}
 };
 let db = null, guestFilt = "all", mbFilt = "all", actFilt = "all", viewingAs = "all";
 
@@ -976,7 +993,7 @@ function updateCountdown() {
     document.getElementById("cd-hours").textContent=pad(hours);
     document.getElementById("cd-mins").textContent=pad(mins);
     document.getElementById("cd-secs").textContent=pad(secs);
-
+  }
   const daysOnly = Math.ceil(diff/86400000);
   ["nikah","mehendi","walima"].forEach((ev,i) => {
     const dates = ["2026-09-01","2026-09-04","2026-09-05"];
@@ -1394,6 +1411,57 @@ function scrollTo(id){document.querySelector(id)?.scrollIntoView({behavior:"smoo
 // ══════════════════════════════════════════
 buildCals();
 renderAll();
+
+// ══════════════════════════════════════════
+// HERO SLIDER
+// ══════════════════════════════════════════
+(function(){
+  const slides=document.querySelectorAll('.hero-slide');
+  const wrap=document.getElementById('hero-dots');
+  if(!slides.length||!wrap)return;
+  let cur=0,timer;
+  slides.forEach(function(_,i){
+    const d=document.createElement('button');
+    d.className='hero-dot'+(i===0?' active':'');
+    d.setAttribute('aria-label','Slide '+(i+1));
+    d.onclick=function(){goTo(i);reset();};
+    wrap.appendChild(d);
+  });
+  function dots(){return wrap.querySelectorAll('.hero-dot');}
+  function goTo(n){
+    slides[cur].classList.remove('active');dots()[cur].classList.remove('active');
+    cur=(n+slides.length)%slides.length;
+    slides[cur].classList.add('active');dots()[cur].classList.add('active');
+  }
+  function reset(){clearInterval(timer);timer=setInterval(function(){goTo(cur+1);},5000);}
+  reset();
+})();
+
+// ══════════════════════════════════════════
+// GALLERY SLIDER
+// ══════════════════════════════════════════
+(function(){
+  const slider=document.getElementById('gallery-slider');
+  const dotsWrap=document.getElementById('gnav-dots');
+  if(!slider||!dotsWrap)return;
+  const slides=slider.querySelectorAll('.gallery-slide');
+  const visCount=window.innerWidth<=768?1:2;
+  const total=Math.ceil(slides.length/visCount);
+  let cur=0;
+  for(let i=0;i<total;i++){
+    const d=document.createElement('button');
+    d.className='gnav-dot'+(i===0?' active':'');
+    d.onclick=function(){goTo(i);};
+    dotsWrap.appendChild(d);
+  }
+  function goTo(n){
+    cur=(n+total)%total;
+    const slideW=slider.querySelector('.gallery-slide').offsetWidth+6;
+    slider.style.transform='translateX(-'+(cur*visCount*slideW)+'px)';
+    dotsWrap.querySelectorAll('.gnav-dot').forEach(function(d,i){d.classList.toggle('active',i===cur);});
+  }
+  window.gSlide=function(dir){goTo(cur+dir);};
+})();
 </script>
 </body>
 </html>
