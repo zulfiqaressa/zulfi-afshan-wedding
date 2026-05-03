@@ -254,6 +254,26 @@ tr:hover td{background:var(--cream);}
 .vote-btn:hover{background:var(--cream);border-color:var(--gold);color:var(--gold);}
 .vote-count{font-size:0.7rem;color:var(--muted);font-weight:500;}
 
+/* ── COST CALCULATOR ── */
+.calc-mode-tabs{display:flex;border-bottom:0.5px solid var(--border);}
+.calc-tab{flex:1;padding:0.75rem;font-family:"Jost",sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:var(--muted);font-weight:500;transition:all 0.2s;}
+.calc-tab.active{color:var(--dark);box-shadow:inset 0 -2px 0 var(--gold);}
+.calc-result-box{background:var(--cream);border-radius:8px;padding:1rem 1.25rem;min-height:72px;font-size:0.81rem;}
+.cr-item{display:flex;justify-content:space-between;align-items:baseline;padding:0.28rem 0;border-bottom:0.5px solid var(--border);}
+.cr-item:last-child{border-bottom:none;}
+.cr-label{color:var(--muted);}
+.cr-value{font-weight:500;}
+.cr-total{color:var(--gold);font-size:0.95rem;font-weight:600;}
+.calc-display{background:var(--dark);color:#fff;padding:0.9rem 1.1rem;border-radius:8px;text-align:right;font-size:1.75rem;font-family:"Jost",sans-serif;font-weight:300;margin-bottom:0.65rem;min-height:58px;word-break:break-all;line-height:1.2;}
+.calc-expr{font-size:0.72rem;color:rgba(255,255,255,0.45);min-height:1em;margin-bottom:0.1rem;text-align:right;}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.45rem;}
+.cb{padding:0.9rem 0;border:none;border-radius:8px;font-family:"Jost",sans-serif;font-size:0.92rem;font-weight:500;cursor:pointer;background:var(--warm);color:var(--dark);transition:filter 0.1s,transform 0.1s;user-select:none;}
+.cb:hover{filter:brightness(0.92);}
+.cb:active{transform:scale(0.93);}
+.cb-fn{background:rgba(92,61,46,0.14);color:var(--dark);}
+.cb-op{background:var(--gold);color:#fff;}
+.cb-eq{background:var(--gold);color:#fff;}
+
 /* ── VENDORS ── */
 .vendor-list{display:flex;flex-direction:column;gap:0.85rem;}
 .vcard{background:#fff;border:0.5px solid var(--border);border-radius:10px;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.85rem;box-shadow:0 2px 8px var(--shadow);}
@@ -561,6 +581,80 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
     <button class="fb" onclick="filterLoc('selected',this)">Selected ✓</button>
   </div>
   <div class="loc-grid" id="loc-grid"></div>
+
+  <!-- COST CALCULATOR -->
+  <div style="margin-top:2rem;">
+    <div class="bsec" style="font-size:1rem;">🧮 Cost Calculator</div>
+    <div class="card" style="margin-top:0.75rem;">
+      <div class="calc-mode-tabs">
+        <button class="calc-tab active" onclick="switchCalcMode('venue',this)">Venue Calculator</button>
+        <button class="calc-tab" onclick="switchCalcMode('basic',this)">Basic Calculator</button>
+      </div>
+
+      <!-- VENUE CALC PANEL -->
+      <div id="calc-venue-panel" class="card-pad">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;">
+          <div class="fg">
+            <label>Venue</label>
+            <select class="fi" id="calc-venue-sel" onchange="calcVenueCost()">
+              <option value="">— select a venue —</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Guest Count</label>
+            <select class="fi" id="calc-guests-sel" onchange="calcGuestSelChange()">
+              <option value="all">All guests</option>
+              <option value="walima">Walima guests</option>
+              <option value="nikah">Nikah guests</option>
+              <option value="mehendi">Mehendi guests</option>
+              <option value="europe">Europe guests</option>
+              <option value="me">Middle East guests</option>
+              <option value="local">Local guests</option>
+              <option value="custom">Custom number…</option>
+            </select>
+          </div>
+        </div>
+        <div id="calc-custom-row" style="display:none;margin-bottom:0.75rem;">
+          <div class="fg" style="max-width:200px;">
+            <label>Number of Guests</label>
+            <input class="fi" type="number" id="calc-custom-n" min="1" placeholder="e.g. 500" oninput="calcVenueCost()">
+          </div>
+        </div>
+        <div id="calc-venue-result" class="calc-result-box">
+          <span style="color:var(--muted);font-size:0.78rem;">Select a venue to see the cost estimate.</span>
+        </div>
+      </div>
+
+      <!-- BASIC CALC PANEL -->
+      <div id="calc-basic-panel" class="card-pad" style="display:none;max-width:320px;">
+        <div id="calc-expr" class="calc-expr"></div>
+        <div id="calc-display" class="calc-display">0</div>
+        <div class="calc-grid">
+          <button class="cb cb-fn" onclick="calcKey('C')">C</button>
+          <button class="cb cb-fn" onclick="calcKey('+/-')">+/−</button>
+          <button class="cb cb-fn" onclick="calcKey('%')">%</button>
+          <button class="cb cb-op" onclick="calcKey('÷')">÷</button>
+          <button class="cb" onclick="calcKey('7')">7</button>
+          <button class="cb" onclick="calcKey('8')">8</button>
+          <button class="cb" onclick="calcKey('9')">9</button>
+          <button class="cb cb-op" onclick="calcKey('×')">×</button>
+          <button class="cb" onclick="calcKey('4')">4</button>
+          <button class="cb" onclick="calcKey('5')">5</button>
+          <button class="cb" onclick="calcKey('6')">6</button>
+          <button class="cb cb-op" onclick="calcKey('−')">−</button>
+          <button class="cb" onclick="calcKey('1')">1</button>
+          <button class="cb" onclick="calcKey('2')">2</button>
+          <button class="cb" onclick="calcKey('3')">3</button>
+          <button class="cb cb-op" onclick="calcKey('+')">+</button>
+          <button class="cb cb-fn" onclick="calcKey('⌫')">⌫</button>
+          <button class="cb" onclick="calcKey('0')">0</button>
+          <button class="cb" onclick="calcKey('.')">.</button>
+          <button class="cb cb-eq" onclick="calcKey('=')">=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div style="margin-top:2rem;">
     <div class="bsec" style="font-size:1rem;">+ Add a Venue Manually</div>
     <div class="card" style="margin-top:0.75rem;"><div class="card-pad">
@@ -1078,6 +1172,7 @@ function filterLoc(filt,btn){
 }
 function renderLocations(){
   const who=viewingAs==="all"?"anon":viewingAs;
+  refreshCalcVenues();
   document.getElementById("loc-grid").innerHTML=S.locations.map((v,i)=>{
     const hasVoted=(v.votes||[]).includes(who);
     const locTag=v.location.toLowerCase().includes("gilgit")?"Gilgit":"Hunza";
@@ -1102,6 +1197,102 @@ function renderLocations(){
     </div>`;
   }).join("");
 }
+
+// ══════════════════════════════════════════
+// COST CALCULATOR
+// ══════════════════════════════════════════
+function switchCalcMode(mode,btn){
+  document.querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('calc-venue-panel').style.display=mode==='venue'?'block':'none';
+  document.getElementById('calc-basic-panel').style.display=mode==='basic'?'block':'none';
+  if(mode==='basic')document.getElementById('calc-basic-panel').focus();
+}
+function refreshCalcVenues(){
+  const sel=document.getElementById('calc-venue-sel');if(!sel)return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— select a venue —</option>'+
+    S.locations.map((v,i)=>`<option value="${i}">${v.name} · ${v.location}</option>`).join('');
+  if(cur)sel.value=cur;
+}
+function parseVenueCost(costStr){
+  const nums=costStr.replace(/,/g,'').match(/\d+/g);
+  if(!nums||!nums.length)return null;
+  const min=parseInt(nums[0]),max=nums.length>1?parseInt(nums[1]):min;
+  return{min,max,avg:Math.round((min+max)/2)};
+}
+function getGuestCount(mode){
+  if(mode==='all')return S.guests.length;
+  if(mode==='walima')return S.guests.filter(g=>g.events&&/walima/i.test(g.events)).length;
+  if(mode==='nikah')return S.guests.filter(g=>g.events&&/nikah/i.test(g.events)).length;
+  if(mode==='mehendi')return S.guests.filter(g=>g.events&&/mehendi/i.test(g.events)).length;
+  if(mode==='europe')return S.guests.filter(g=>g.origin==='Europe').length;
+  if(mode==='me')return S.guests.filter(g=>g.origin==='Middle East'||g.origin==='Dubai').length;
+  if(mode==='local')return S.guests.filter(g=>g.origin==='Local').length;
+  if(mode==='custom'){const n=parseInt(document.getElementById('calc-custom-n').value);return isNaN(n)?0:n;}
+  return 0;
+}
+function calcGuestSelChange(){
+  const mode=document.getElementById('calc-guests-sel').value;
+  document.getElementById('calc-custom-row').style.display=mode==='custom'?'block':'none';
+  calcVenueCost();
+}
+function calcVenueCost(){
+  const vi=document.getElementById('calc-venue-sel').value;
+  const guestMode=document.getElementById('calc-guests-sel').value;
+  const result=document.getElementById('calc-venue-result');
+  if(!vi){result.innerHTML='<span style="color:var(--muted);font-size:0.78rem;">Select a venue to see the cost estimate.</span>';return;}
+  const venue=S.locations[parseInt(vi)];
+  const cost=parseVenueCost(venue.cost);
+  const count=getGuestCount(guestMode);
+  const gLabel=document.getElementById('calc-guests-sel').options[document.getElementById('calc-guests-sel').selectedIndex].text;
+  if(!cost){result.innerHTML='<span style="color:var(--muted);font-size:0.78rem;">Cost format not recognised for this venue.</span>';return;}
+  const fmt=n=>'PKR '+Math.round(n).toLocaleString();
+  result.innerHTML=`
+    <div class="cr-item"><span class="cr-label">Venue</span><span class="cr-value">${venue.name}</span></div>
+    <div class="cr-item"><span class="cr-label">Guests (${gLabel})</span><span class="cr-value">${count}</span></div>
+    <div class="cr-item"><span class="cr-label">Cost/head — low</span><span class="cr-value">${fmt(cost.min)}</span></div>
+    <div class="cr-item"><span class="cr-label">Cost/head — high</span><span class="cr-value">${fmt(cost.max)}</span></div>
+    <div class="cr-item"><span class="cr-label">Total (low estimate)</span><span class="cr-value">${fmt(cost.min*count)}</span></div>
+    <div class="cr-item"><span class="cr-label">Total (high estimate)</span><span class="cr-value">${fmt(cost.max*count)}</span></div>
+    <div class="cr-item"><span class="cr-label" style="font-weight:500;">Average total</span><span class="cr-value cr-total">${fmt(cost.avg*count)}</span></div>`;
+}
+// Basic calculator
+let _cv='0',_cp=null,_co=null,_cr=false;
+function _calcDisp(){
+  document.getElementById('calc-display').textContent=_cv==='Error'?'Error':_cv;
+  const exprEl=document.getElementById('calc-expr');
+  exprEl.textContent=(_cp!==null&&_co)?_cp+' '+_co:'';
+}
+function calcKey(k){
+  if(k==='C'){_cv='0';_cp=null;_co=null;_cr=false;}
+  else if(k==='⌫'){_cv=_cv.length>1&&_cv!=='Error'?_cv.slice(0,-1):'0';}
+  else if(k==='+/-'){_cv=_cv==='Error'?'0':_cv.startsWith('-')?_cv.slice(1):(_cv==='0'?'0':'-'+_cv);}
+  else if(k==='%'){const n=parseFloat(_cv);_cv=isNaN(n)?'0':String(n/100);}
+  else if(['+','−','×','÷'].includes(k)){
+    if(_co&&!_cr){const r=_calcEval(parseFloat(_cp),parseFloat(_cv),_co);_cv=isFinite(r)?String(r):'Error';}
+    if(_cv!=='Error'){_cp=_cv;_co=k;_cr=true;}
+  }else if(k==='='){
+    if(_co&&_cp!==null){const r=_calcEval(parseFloat(_cp),parseFloat(_cv),_co);_cv=isFinite(r)?String(r):'Error';_cp=null;_co=null;_cr=false;}
+  }else if(k==='.'){
+    if(_cr||_cv==='Error'){_cv='0.';_cr=false;}
+    else if(!_cv.includes('.'))_cv+='.';
+  }else{
+    if(_cr||_cv==='Error'){_cv=k;_cr=false;}
+    else _cv=_cv==='0'?k:_cv+k;
+  }
+  _calcDisp();
+}
+function _calcEval(a,b,op){
+  if(op==='+')return a+b;if(op==='−')return a-b;
+  if(op==='×')return a*b;if(op==='÷')return b===0?NaN:a/b;return b;
+}
+document.addEventListener('keydown',function(e){
+  const bp=document.getElementById('calc-basic-panel');
+  if(!bp||bp.style.display==='none')return;
+  const map={'0':'0','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9','.':'.','Enter':'=','=':'=','Backspace':'⌫','Escape':'C','+':'+','-':'−','*':'×','/':'÷','%':'%'};
+  if(map[e.key]){e.preventDefault();calcKey(map[e.key]);}
+});
 
 // ══════════════════════════════════════════
 // MOOD BOARD
