@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zulfi & Afshan — Wedding 2025</title>
+<title>Zulfi & Afshan — September 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -86,20 +86,23 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--dark);}
 
 /* ── GALLERY ── */
 .gallery-section{padding:5.5rem 3rem;background:var(--warm);}
-.gallery-slider-wrap{position:relative;margin-top:2.5rem;overflow:hidden;}
-.gallery-slider{display:flex;gap:6px;transition:transform 0.5s cubic-bezier(.4,0,.2,1);}
-.gallery-slide{flex:0 0 calc(50% - 3px);height:320px;position:relative;overflow:hidden;border-radius:6px;cursor:pointer;}
-@media(max-width:768px){.gallery-slide{flex:0 0 calc(100% - 6px);}}
-.gallery-slide img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;}
-.gallery-slide:hover img{transform:scale(1.04);}
-.gallery-cap{position:absolute;bottom:0;left:0;right:0;padding:0.85rem 1rem;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);color:#fff;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.3s;}
-.gallery-slide:hover .gallery-cap{opacity:1;}
-.gallery-nav{display:flex;justify-content:center;gap:0.75rem;margin-top:1.25rem;align-items:center;}
-.gnav-btn{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--border);background:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;color:var(--dark);}
-.gnav-btn:hover{background:var(--dark);color:#fff;border-color:var(--dark);}
-.gnav-dots{display:flex;gap:0.4rem;align-items:center;}
-.gnav-dot{width:6px;height:6px;border-radius:50%;background:var(--border);border:none;padding:0;cursor:pointer;transition:background 0.2s,transform 0.2s;}
-.gnav-dot.active{background:var(--dark);transform:scale(1.3);}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:2.5rem;}
+@media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:540px){.gallery-grid{grid-template-columns:1fr;}}
+.gallery-grid .g-item{position:relative;overflow:hidden;border-radius:6px;cursor:pointer;background:#111;}
+.gallery-grid .g-item.tall{grid-row:span 2;}
+.gallery-grid .g-item.wide{grid-column:span 2;}
+.gallery-grid .g-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s ease,opacity 0.3s;}
+.gallery-grid .g-item:hover img{transform:scale(1.05);opacity:0.88;}
+.gallery-grid .g-item .g-cap{position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.1rem 0.9rem;background:linear-gradient(to top,rgba(10,6,2,0.82) 0%,rgba(10,6,2,0.3) 60%,transparent 100%);opacity:0;transition:opacity 0.35s;}
+.gallery-grid .g-item:hover .g-cap{opacity:1;}
+.g-cap-place{font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold-light);margin-bottom:0.18rem;}
+.g-cap-label{font-family:"Cormorant Garamond",serif;font-size:1.05rem;font-style:italic;color:#fff;line-height:1.3;}
+/* height helpers */
+.g-h280{height:280px;}
+.g-h580{height:580px;}
+@media(max-width:900px){.gallery-grid .g-item.tall{grid-row:auto;}.gallery-grid .g-item.wide{grid-column:auto;}.g-h580{height:280px;}}
+@media(max-width:540px){.g-h280,.g-h580{height:240px;}}
 
 /* ── PLANNER DIVIDER ── */
 .planner-divider{padding:3rem 3rem;background:#fff;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
@@ -352,7 +355,6 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
   <div class="nav-links">
     <a onclick="scrollTo('#events-sec')">Events</a>
     <a onclick="scrollTo('#gallery-sec')">Gallery</a>
-    <a onclick="scrollTo('#planner-sec')">Planner</a>
     <div class="nav-fb"><span class="fb-dot" id="fbdot"></span><span id="fblabel">Connecting...</span></div>
   </div>
 </nav>
@@ -397,13 +399,7 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
   <div class="about-content">
     <div class="section-eyebrow">Our Story</div>
     <div class="about-heading">Planning the most<br>beautiful chapter<br><em>of our life</em></div>
-    <div class="about-text">From the mountains of Gilgit to the shores of Ohrid — this planner is built with love to bring our families together and make every detail of our wedding beautiful. Three events, one unforgettable journey.</div>
-    <div class="about-stats">
-      <div><div class="stat-num">3</div><div class="stat-label">Events</div></div>
-      <div><div class="stat-num">~500</div><div class="stat-label">Guests</div></div>
-      <div><div class="stat-num">6</div><div class="stat-label">Family Planners</div></div>
-      <div><div class="stat-num" id="about-days">127</div><div class="stat-label">Days to Go</div></div>
-    </div>
+    <div class="about-text">From the mountains of Gilgit to the shores of Ohrid — two people, a lifetime of memories already made, and one beautiful chapter still to come. September 2026.</div>
   </div>
 </div>
 
@@ -439,321 +435,46 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
 <div class="gallery-section" id="gallery-sec">
   <div class="section-eyebrow">Our Memories</div>
   <div class="about-heading" style="margin-bottom:0.35rem;">Together, always.</div>
-  <div style="font-size:0.82rem;color:var(--muted);margin-bottom:2rem;">From Ohrid to Skopje — snapshots of us.</div>
-  <div class="gallery-slider-wrap" id="gallery-slider-wrap">
-    <div class="gallery-slider" id="gallery-slider">
-      <div class="gallery-slide">
-        <img src="IMG_2522.jpeg" alt="Akershus Fortress · Oslo">
-        <div class="gallery-cap">Akershus Fortress · Oslo</div>
-      </div>
-      <div class="gallery-slide">
-        <img src="IMG_3680.jpeg" alt="Golden hour · Swiss Alps">
-        <div class="gallery-cap">Golden hour · Swiss Alps</div>
-      </div>
-      <div class="gallery-slide">
-        <img src="IMG_3861.jpeg" alt="Camp Nou · Barcelona">
-        <div class="gallery-cap">Camp Nou · Barcelona</div>
-      </div>
-      <div class="gallery-slide">
-        <img src="IMG_4259.JPG" alt="A night to remember · Germany">
-        <div class="gallery-cap">A night to remember · Germany</div>
-      </div>
-      <div class="gallery-slide">
-        <img src="IMG_4290.jpeg" alt="Rainy days · Paris">
-        <div class="gallery-cap">Rainy days · Paris</div>
-      </div>
-      <div class="gallery-slide">
-        <img src="IMG_4366.jpeg" alt="All aboard · Brussels">
-        <div class="gallery-cap">All aboard · Brussels</div>
-      </div>
-      <div class="gallery-slide">
-        <img src="IMG_4450.jpeg" alt="Summer vibes · Europe">
-        <div class="gallery-cap">Summer vibes · Europe</div>
-      </div>
-      <div class="gallery-slide">
-        <img src="IMG_8564.jpeg" alt="Old Town · North Macedonia">
-        <div class="gallery-cap">Old Town · North Macedonia</div>
-      </div>
+  <div style="font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem;font-style:italic;font-family:'Cormorant Garamond',serif;">Oslo · Swiss Alps · Barcelona · Germany · Paris · Brussels · Europe · North Macedonia</div>
+  <div class="gallery-grid">
+    <!-- Row 1: tall left, two stacked right -->
+    <div class="g-item tall g-h580">
+      <img src="IMG_3680.jpeg" alt="">
+      <div class="g-cap"><div class="g-cap-place">Switzerland</div><div class="g-cap-label">Golden hour in the Alps</div></div>
     </div>
-  </div>
-  <div class="gallery-nav">
-    <button class="gnav-btn" onclick="gSlide(-1)" aria-label="Previous">&#8592;</button>
-    <div class="gnav-dots" id="gnav-dots"></div>
-    <button class="gnav-btn" onclick="gSlide(1)" aria-label="Next">&#8594;</button>
-  </div>
-
-<!-- PLANNER DIVIDER -->
-<div class="planner-divider" id="planner-sec">
-  <div class="planner-divider-left">
-    <h2>Wedding Planner</h2>
-    <p>Manage everything · Syncs live for all family members via Firebase</p>
-  </div>
-  <div class="viewing-as-wrap">
-    <span class="viewing-as-label">Viewing as</span>
-    <select class="viewing-as-select" id="viewing-as" onchange="setViewingAs(this.value)">
-      <option value="all">Everyone</option>
-      <option value="zulfi">Zulfi</option>
-      <option value="afshan">Afshan</option>
-      <option value="mehwish">Mehwish</option>
-      <option value="faizan">Faizan</option>
-      <option value="seher">Seher</option>
-      <option value="hira">Hira</option>
-    </select>
-  </div>
-</div>
-
-<!-- PLANNER TABS -->
-<div class="planner-tabs" id="planner-tabs-bar">
-  <button class="tab-btn active" onclick="showTab('calendar',this)">📅 Calendar</button>
-  <button class="tab-btn" onclick="showTab('events',this)">✨ Events</button>
-  <button class="tab-btn" onclick="showTab('guests',this)">👥 Guests</button>
-  <button class="tab-btn" onclick="showTab('budget',this)">💰 Budget</button>
-  <button class="tab-btn" onclick="showTab('locations',this)">📍 Locations</button>
-  <button class="tab-btn" onclick="showTab('vendors',this)">🎵 Vendors</button>
-  <button class="tab-btn" onclick="showTab('moodboard',this)">🎨 Mood Board</button>
-  <button class="tab-btn" onclick="showTab('activity',this)">📋 Activity</button>
-</div>
-
-<!-- ══ CALENDAR ══ -->
-<div class="planner-section active" id="tab-calendar">
-  <div class="sec-header"><div><div class="sec-title">Dates &amp; Islamic Calendar</div><div class="sec-sub">Gregorian &amp; Hijri · Muharram &amp; Arbaeen flagged · Click a date to mark it</div></div></div>
-  <div class="timeline" id="tl-cards"></div>
-  <div class="cal-info"><div style="font-size:1.2rem;flex-shrink:0;">🌙</div><div><strong style="color:var(--dark);">Muharram 1447</strong> begins ~July 7, 2025. Ashura (10 Muharram) ~July 16. <strong style="color:var(--dark);">Arbaeen</strong> (40th day of Imam Hussein a.s.) falls ~<strong style="color:var(--dark);">August 24</strong>. All three events are safely after Arbaeen.</div></div>
-  <div class="month-grid">
-    <div class="month-card"><div class="month-hdr"><span class="greg">August 2025</span><span class="hijri">Muharram – Safar 1447</span></div><div class="cal-grid" id="cal-aug"></div><div class="cal-legend"><div class="leg"><div class="leg-dot" style="background:var(--blossom-pale);border:0.5px solid var(--rose);"></div>Restricted</div><div class="leg"><div class="leg-dot" style="background:var(--pine-pale);border:0.5px solid var(--pine);"></div>Arbaeen (24th)</div><div class="leg"><div class="leg-dot" style="background:var(--gold-pale);border:0.5px solid var(--gold);"></div>Window opens</div></div></div>
-    <div class="month-card"><div class="month-hdr"><span class="greg">September 2026</span><span class="hijri">Safar 1447</span></div><div class="cal-grid" id="cal-sep"></div><div class="cal-legend"><div class="leg"><div class="leg-dot" style="background:var(--pine);border-radius:50%;"></div>Nikah (1st)</div><div class="leg"><div class="leg-dot" style="background:var(--gold);border-radius:50%;"></div>Mehendi (4th)</div><div class="leg"><div class="leg-dot" style="background:var(--rose);border-radius:50%;"></div>Walima (5th)</div></div></div>
-  </div>
-</div>
-
-<!-- ══ EVENTS ══ -->
-<div class="planner-section" id="tab-events">
-  <div class="sec-header"><div><div class="sec-title">Events &amp; Tasks</div><div class="sec-sub">Assign tasks · Tick off as you go · Syncs live</div></div></div>
-  <div class="fbar" style="align-items:center;">
-    <button class="fb active" onclick="filterTasks('all',this)">All</button>
-    <div class="fbar-div"></div><span class="fbar-lbl">Zulfi's side</span>
-    <button class="fb" onclick="filterTasks('zulfi',this)">Zulfi</button>
-    <button class="fb" onclick="filterTasks('faizan',this)">Faizan</button>
-    <button class="fb" onclick="filterTasks('mehwish',this)">Mehwish</button>
-    <div class="fbar-div"></div><span class="fbar-lbl">Afshan's side</span>
-    <button class="fb" onclick="filterTasks('afshan',this)">Afshan</button>
-    <button class="fb" onclick="filterTasks('seher',this)">Seher</button>
-    <button class="fb" onclick="filterTasks('hira',this)">Hira</button>
-    <div class="fbar-div"></div>
-    <button class="fb" onclick="filterTasks('both',this)">Joint</button>
-  </div>
-  <div class="event-cards">
-    <div class="card"><div class="ev-top"><div><span class="ebadge b-nikah">Event 1</span><div class="ev-title">Nikah</div><div class="ev-meta-date">📅 Monday, 1 September 2026</div><div class="ev-meta">📍 Ayashi, Ghizer · Road opens ~6am–9am</div></div><div class="eowner-pill">👰 Afshan's home</div></div><div class="card-pad"><ul class="tasks-list" id="tl-nikah"></ul><div class="add-row"><input class="add-inp" id="ti-nikah" placeholder="Add Nikah task..." onkeydown="if(event.key==='Enter')addTask('nikah')"><select class="add-sel" id="to-nikah"><option value="zulfi">Zulfi</option><option value="faizan">Faizan</option><option value="mehwish">Mehwish</option><option value="afshan">Afshan</option><option value="seher">Seher</option><option value="hira">Hira</option><option value="both">Joint</option></select><button class="btn-add" onclick="addTask('nikah')">+ Add</button></div></div></div>
-    <div class="card"><div class="ev-top"><div><span class="ebadge b-mehendi">Event 2</span><div class="ev-title">Mehendi Bazam</div><div class="ev-meta-date">📅 Thursday, 4 September 2026</div><div class="ev-meta">📍 Duroyo Inn, Gilgit · Youth · Music &amp; Dance</div></div><div class="eowner-pill">🎶 Joint</div></div><div class="card-pad"><ul class="tasks-list" id="tl-mehendi"></ul><div class="add-row"><input class="add-inp" id="ti-mehendi" placeholder="Add Mehendi task..." onkeydown="if(event.key==='Enter')addTask('mehendi')"><select class="add-sel" id="to-mehendi"><option value="zulfi">Zulfi</option><option value="faizan">Faizan</option><option value="mehwish">Mehwish</option><option value="afshan">Afshan</option><option value="seher">Seher</option><option value="hira">Hira</option><option value="both">Joint</option></select><button class="btn-add" onclick="addTask('mehendi')">+ Add</button></div></div></div>
-    <div class="card"><div class="ev-top"><div><span class="ebadge b-walima">Event 3</span><div class="ev-title">Walima</div><div class="ev-meta-date">📅 Friday, 5 September 2026 · Main Event</div><div class="ev-meta">📍 Gilgit · Venue TBC · ~500 guests</div></div><div class="eowner-pill">🌿 Joint</div></div><div class="card-pad"><ul class="tasks-list" id="tl-walima"></ul><div class="add-row"><input class="add-inp" id="ti-walima" placeholder="Add Walima task..." onkeydown="if(event.key==='Enter')addTask('walima')"><select class="add-sel" id="to-walima"><option value="zulfi">Zulfi</option><option value="faizan">Faizan</option><option value="mehwish">Mehwish</option><option value="afshan">Afshan</option><option value="seher">Seher</option><option value="hira">Hira</option><option value="both">Joint</option></select><button class="btn-add" onclick="addTask('walima')">+ Add</button></div></div></div>
-  </div>
-</div>
-
-<!-- ══ GUESTS ══ -->
-<div class="planner-section" id="tab-guests">
-  <div class="sec-header"><div><div class="sec-title">Guest List</div><div class="sec-sub">Track who's coming, from where, and to which events</div></div></div>
-  <div class="stats-row">
-    <div class="stat-card"><div class="sc-num" id="gs-total">0</div><div class="sc-label">Total</div></div>
-    <div class="stat-card"><div class="sc-num" id="gs-eu">0</div><div class="sc-label">Europe</div></div>
-    <div class="stat-card"><div class="sc-num" id="gs-me">0</div><div class="sc-label">Middle East</div></div>
-    <div class="stat-card"><div class="sc-num" id="gs-pk">0</div><div class="sc-label">Pakistan</div></div>
-  </div>
-  <div class="fbar">
-    <button class="fb active" onclick="filterGuests('all',this)">All</button>
-    <button class="fb" onclick="filterGuests('Europe',this)">Europe</button>
-    <button class="fb" onclick="filterGuests('Middle East',this)">Middle East</button>
-    <button class="fb" onclick="filterGuests('Local',this)">Local</button>
-    <button class="fb" onclick="filterGuests('Travelling',this)">Travelling</button>
-  </div>
-  <div class="tw"><table><thead><tr><th>Name</th><th>Origin</th><th>Events</th><th>Contact</th><th>Notes</th><th></th></tr></thead><tbody id="gtbody"><tr><td colspan="6" class="empty-state">No guests yet — add below</td></tr></tbody></table></div>
-  <div class="add-form" style="grid-template-columns:2fr 1fr 1fr 1fr;">
-    <div class="fg"><label>Full Name</label><input class="fi" id="gn" placeholder="e.g. Hassan Ali" onkeydown="if(event.key==='Enter')addGuest()"></div>
-    <div class="fg"><label>Origin</label><select class="fi" id="go"><option>Local</option><option>Europe</option><option>Middle East</option><option>Dubai</option><option>Travelling</option></select></div>
-    <div class="fg"><label>Events</label><select class="fi" id="ge"><option>All Events</option><option>Nikah only</option><option>Mehendi + Walima</option><option>Walima only</option></select></div>
-    <div class="fg"><label>Contact Person</label><select class="fi" id="gc"><option value="zulfi">Zulfi</option><option value="afshan">Afshan</option><option value="mehwish">Mehwish</option><option value="faizan">Faizan</option><option value="seher">Seher</option><option value="hira">Hira</option></select></div>
-    <div class="fg"><label>Notes</label><input class="fi" id="gnotes" placeholder="Needs accommodation..."></div>
-    <button class="btn-add" onclick="addGuest()" style="align-self:end;height:36px;padding:0 1rem;">+ Add</button>
-  </div>
-</div>
-
-<!-- ══ BUDGET ══ -->
-<div class="planner-section" id="tab-budget">
-  <div class="sec-header"><div><div class="sec-title">Budget Tracker</div><div class="sec-sub">Per event + cumulative · All amounts in PKR</div></div></div>
-  <div class="bsummary">
-    <div class="bcard"><div class="blabel">Nikah</div><div class="bamount"><span class="bcur">PKR</span><span id="bt-nikah">0</span></div></div>
-    <div class="bcard"><div class="blabel">Mehendi</div><div class="bamount"><span class="bcur">PKR</span><span id="bt-mehendi">0</span></div></div>
-    <div class="bcard"><div class="blabel">Walima</div><div class="bamount"><span class="bcur">PKR</span><span id="bt-walima">0</span></div></div>
-    <div class="bcard tot"><div class="blabel">Grand Total</div><div class="bamount"><span class="bcur" style="color:rgba(255,255,255,0.4);">PKR</span><span id="bt-total">0</span></div></div>
-  </div>
-  <div class="bsec">Nikah Expenses</div>
-  <div class="tw"><table><thead><tr><th>Item</th><th>Responsible</th><th>PKR</th><th></th></tr></thead><tbody id="bb-nikah"><tr><td colspan="4" style="color:var(--muted);font-style:italic;font-size:0.78rem;padding:0.75rem 0.9rem;">No items yet</td></tr></tbody></table></div>
-  <div class="badd"><input class="fi" id="bn-i" placeholder="Item description" onkeydown="if(event.key==='Enter')addBudget('nikah')"><select class="fi" id="bn-o"><option>Zulfi</option><option>Afshan</option><option>Mehwish</option><option>Faizan</option><option>Seher</option><option>Hira</option><option>Both</option></select><input type="number" class="fi" id="bn-a" placeholder="Amount PKR"><button class="btn-add" onclick="addBudget('nikah')">+ Add</button></div>
-  <div class="bsec">Mehendi Expenses</div>
-  <div class="tw"><table><thead><tr><th>Item</th><th>Responsible</th><th>PKR</th><th></th></tr></thead><tbody id="bb-mehendi"><tr><td colspan="4" style="color:var(--muted);font-style:italic;font-size:0.78rem;padding:0.75rem 0.9rem;">No items yet</td></tr></tbody></table></div>
-  <div class="badd"><input class="fi" id="bm-i" placeholder="Item description" onkeydown="if(event.key==='Enter')addBudget('mehendi')"><select class="fi" id="bm-o"><option>Zulfi</option><option>Afshan</option><option>Mehwish</option><option>Faizan</option><option>Seher</option><option>Hira</option><option>Both</option></select><input type="number" class="fi" id="bm-a" placeholder="Amount PKR"><button class="btn-add" onclick="addBudget('mehendi')">+ Add</button></div>
-  <div class="bsec">Walima Expenses</div>
-  <div class="tw"><table><thead><tr><th>Item</th><th>Responsible</th><th>PKR</th><th></th></tr></thead><tbody id="bb-walima"><tr><td colspan="4" style="color:var(--muted);font-style:italic;font-size:0.78rem;padding:0.75rem 0.9rem;">No items yet</td></tr></tbody></table></div>
-  <div class="badd"><input class="fi" id="bw-i" placeholder="Item description" onkeydown="if(event.key==='Enter')addBudget('walima')"><select class="fi" id="bw-o"><option>Zulfi</option><option>Afshan</option><option>Mehwish</option><option>Faizan</option><option>Seher</option><option>Hira</option><option>Both</option></select><input type="number" class="fi" id="bw-a" placeholder="Amount PKR"><button class="btn-add" onclick="addBudget('walima')">+ Add</button></div>
-</div>
-
-<!-- ══ LOCATIONS ══ -->
-<div class="planner-section" id="tab-locations">
-  <div class="sec-header"><div><div class="sec-title">Venues &amp; Locations</div><div class="sec-sub">Real Hunza &amp; Gilgit venues · Vote · Select · Add your own</div></div></div>
-  <div class="fbar">
-    <button class="fb active" onclick="filterLoc('all',this)">All</button>
-    <button class="fb" onclick="filterLoc('Hunza',this)">Hunza</button>
-    <button class="fb" onclick="filterLoc('Gilgit',this)">Gilgit</button>
-    <button class="fb" onclick="filterLoc('selected',this)">Selected ✓</button>
-  </div>
-  <div class="loc-grid" id="loc-grid"></div>
-
-  <!-- COST CALCULATOR -->
-  <div style="margin-top:2rem;">
-    <div class="bsec" style="font-size:1rem;">🧮 Cost Calculator</div>
-    <div class="card" style="margin-top:0.75rem;">
-      <div class="calc-mode-tabs">
-        <button class="calc-tab active" onclick="switchCalcMode('venue',this)">Venue Calculator</button>
-        <button class="calc-tab" onclick="switchCalcMode('basic',this)">Basic Calculator</button>
-      </div>
-
-      <!-- VENUE CALC PANEL -->
-      <div id="calc-venue-panel" class="card-pad">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;">
-          <div class="fg">
-            <label>Venue</label>
-            <select class="fi" id="calc-venue-sel" onchange="calcVenueCost()">
-              <option value="">— select a venue —</option>
-            </select>
-          </div>
-          <div class="fg">
-            <label>Guest Count</label>
-            <select class="fi" id="calc-guests-sel" onchange="calcGuestSelChange()">
-              <option value="all">All guests</option>
-              <option value="walima">Walima guests</option>
-              <option value="nikah">Nikah guests</option>
-              <option value="mehendi">Mehendi guests</option>
-              <option value="europe">Europe guests</option>
-              <option value="me">Middle East guests</option>
-              <option value="local">Local guests</option>
-              <option value="custom">Custom number…</option>
-            </select>
-          </div>
-        </div>
-        <div id="calc-custom-row" style="display:none;margin-bottom:0.75rem;">
-          <div class="fg" style="max-width:200px;">
-            <label>Number of Guests</label>
-            <input class="fi" type="number" id="calc-custom-n" min="1" placeholder="e.g. 500" oninput="calcVenueCost()">
-          </div>
-        </div>
-        <div id="calc-venue-result" class="calc-result-box">
-          <span style="color:var(--muted);font-size:0.78rem;">Select a venue to see the cost estimate.</span>
-        </div>
-      </div>
-
-      <!-- BASIC CALC PANEL -->
-      <div id="calc-basic-panel" class="card-pad" style="display:none;max-width:320px;">
-        <div id="calc-expr" class="calc-expr"></div>
-        <div id="calc-display" class="calc-display">0</div>
-        <div class="calc-grid">
-          <button class="cb cb-fn" onclick="calcKey('C')">C</button>
-          <button class="cb cb-fn" onclick="calcKey('+/-')">+/−</button>
-          <button class="cb cb-fn" onclick="calcKey('%')">%</button>
-          <button class="cb cb-op" onclick="calcKey('÷')">÷</button>
-          <button class="cb" onclick="calcKey('7')">7</button>
-          <button class="cb" onclick="calcKey('8')">8</button>
-          <button class="cb" onclick="calcKey('9')">9</button>
-          <button class="cb cb-op" onclick="calcKey('×')">×</button>
-          <button class="cb" onclick="calcKey('4')">4</button>
-          <button class="cb" onclick="calcKey('5')">5</button>
-          <button class="cb" onclick="calcKey('6')">6</button>
-          <button class="cb cb-op" onclick="calcKey('−')">−</button>
-          <button class="cb" onclick="calcKey('1')">1</button>
-          <button class="cb" onclick="calcKey('2')">2</button>
-          <button class="cb" onclick="calcKey('3')">3</button>
-          <button class="cb cb-op" onclick="calcKey('+')">+</button>
-          <button class="cb cb-fn" onclick="calcKey('⌫')">⌫</button>
-          <button class="cb" onclick="calcKey('0')">0</button>
-          <button class="cb" onclick="calcKey('.')">.</button>
-          <button class="cb cb-eq" onclick="calcKey('=')">=</button>
-        </div>
-      </div>
+    <div class="g-item g-h280">
+      <img src="IMG_2522.jpeg" alt="">
+      <div class="g-cap"><div class="g-cap-place">Oslo, Norway</div><div class="g-cap-label">Akershus Fortress</div></div>
+    </div>
+    <div class="g-item g-h280">
+      <img src="IMG_4290.jpeg" alt="">
+      <div class="g-cap"><div class="g-cap-place">Paris, France</div><div class="g-cap-label">Rainy days in the city</div></div>
+    </div>
+    <!-- Row 2: wide + one -->
+    <div class="g-item g-h280">
+      <img src="IMG_3861.jpeg" alt="">
+      <div class="g-cap"><div class="g-cap-place">Barcelona, Spain</div><div class="g-cap-label">Camp Nou</div></div>
+    </div>
+    <div class="g-item g-h280">
+      <img src="IMG_4366.jpeg" alt="">
+      <div class="g-cap"><div class="g-cap-place">Brussels, Belgium</div><div class="g-cap-label">All aboard</div></div>
+    </div>
+    <div class="g-item tall g-h580">
+      <img src="IMG_8564.jpeg" alt="">
+      <div class="g-cap"><div class="g-cap-place">North Macedonia</div><div class="g-cap-label">Old stone streets</div></div>
+    </div>
+    <!-- Row 3 -->
+    <div class="g-item g-h280">
+      <img src="IMG_4259.JPG" alt="">
+      <div class="g-cap"><div class="g-cap-place">Germany</div><div class="g-cap-label">A night to remember</div></div>
+    </div>
+    <div class="g-item g-h280">
+      <img src="IMG_4450.jpeg" alt="">
+      <div class="g-cap"><div class="g-cap-place">Europe</div><div class="g-cap-label">Summer vibes</div></div>
     </div>
   </div>
 
-  <div style="margin-top:2rem;">
-    <div class="bsec" style="font-size:1rem;">+ Add a Venue Manually</div>
-    <div class="card" style="margin-top:0.75rem;"><div class="card-pad">
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:0.65rem;margin-bottom:0.65rem;">
-        <div class="fg"><label>Venue Name</label><input class="fi" id="lv-name" placeholder="e.g. Mountain Resort"></div>
-        <div class="fg"><label>Location</label><input class="fi" id="lv-loc" placeholder="e.g. Hunza"></div>
-        <div class="fg"><label>Approx Cost/Guest</label><input class="fi" id="lv-cost" placeholder="e.g. PKR 3,000–5,000"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:2fr 1fr auto;gap:0.65rem;">
-        <div class="fg"><label>Key Highlights</label><input class="fi" id="lv-notes" placeholder="e.g. Lakeside views, 400 capacity"></div>
-        <div class="fg"><label>Website URL</label><input class="fi" id="lv-url" placeholder="https://..."></div>
-        <button class="btn-add" onclick="addVenue()" style="align-self:end;height:36px;padding:0 1.25rem;">+ Add Venue</button>
-      </div>
-    </div></div>
-  </div>
 </div>
-
-<!-- ══ VENDORS ══ -->
-<div class="planner-section" id="tab-vendors">
-  <div class="sec-header"><div><div class="sec-title">Vendors &amp; Contacts</div><div class="sec-sub">Everyone who makes the wedding happen · Click status to update</div></div></div>
-  <div class="vendor-list" id="vlist"></div>
-  <div class="card" style="margin-top:1.5rem;"><div class="card-pad">
-    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem;">Add Vendor / Contact</div>
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:0.65rem;align-items:end;">
-      <div><label style="display:block;font-size:0.65rem;color:var(--muted);margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.06em;">Name</label><input class="fi" id="vn" placeholder="e.g. Ali Photography"></div>
-      <div><label style="display:block;font-size:0.65rem;color:var(--muted);margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.06em;">Role</label><input class="fi" id="vr" placeholder="Photographer"></div>
-      <div><label style="display:block;font-size:0.65rem;color:var(--muted);margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.06em;">Responsible</label><select class="fi" id="vfocal"><option value="zulfi">Zulfi</option><option value="afshan">Afshan</option><option value="mehwish">Mehwish</option><option value="faizan">Faizan</option><option value="seher">Seher</option><option value="hira">Hira</option></select></div>
-      <div><label style="display:block;font-size:0.65rem;color:var(--muted);margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.06em;">Status</label><select class="fi" id="vs"><option value="tbc">TBC</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option></select></div>
-      <button class="btn-add" onclick="addVendor()" style="height:36px;padding:0 1rem;">+ Add</button>
-    </div>
-    <div style="margin-top:0.65rem;"><label style="display:block;font-size:0.65rem;color:var(--muted);margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.06em;">Contact / Notes</label><input class="fi" id="vc" placeholder="Phone, email, or notes" style="width:100%;"></div>
-  </div></div>
-</div>
-
-<!-- ══ MOOD BOARD ══ -->
-<div class="planner-section" id="tab-moodboard">
-  <div class="sec-header"><div><div class="sec-title">Mood Board</div><div class="sec-sub">Shared visual inspiration · Add image URLs or ideas · Syncs live</div></div></div>
-  <div class="fbar">
-    <button class="fb active" onclick="filterMb('all',this)">All</button>
-    <button class="fb" onclick="filterMb('nikah',this)">Nikah</button>
-    <button class="fb" onclick="filterMb('mehendi',this)">Mehendi</button>
-    <button class="fb" onclick="filterMb('walima',this)">Walima</button>
-  </div>
-  <div class="mb-grid" id="mb-grid"></div>
-  <div class="card"><div class="card-pad">
-    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.85rem;">+ Add Inspiration</div>
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:0.65rem;align-items:end;">
-      <div class="fg"><label>Title / Idea</label><input class="fi" id="mb-title" placeholder="e.g. Marigold arch"></div>
-      <div class="fg"><label>Category</label><select class="fi" id="mb-cat"><option>Decor</option><option>Flowers</option><option>Attire</option><option>Food</option><option>Lighting</option><option>Photography</option><option>Henna</option></select></div>
-      <div class="fg"><label>Event</label><select class="fi" id="mb-ev"><option value="mehendi">Mehendi</option><option value="nikah">Nikah</option><option value="walima">Walima</option></select></div>
-      <div class="fg"><label>Added by</label><select class="fi" id="mb-by"><option value="zulfi">Zulfi</option><option value="afshan">Afshan</option><option value="mehwish">Mehwish</option><option value="faizan">Faizan</option><option value="seher">Seher</option><option value="hira">Hira</option></select></div>
-      <button class="btn-add" onclick="addMbItem()" style="height:36px;padding:0 1rem;">+ Add</button>
-    </div>
-    <div style="display:grid;grid-template-columns:2fr 1fr;gap:0.65rem;margin-top:0.65rem;">
-      <div class="fg"><label>Notes / Where to find</label><input class="fi" id="mb-notes" placeholder="Available from Gilgit bazaar, PKR 2,000 approx"></div>
-      <div class="fg"><label>Image URL (optional)</label><input class="fi" id="mb-url" placeholder="https://..."></div>
-    </div>
-  </div></div>
-</div>
-
-<!-- ══ ACTIVITY LOG ══ -->
-<div class="planner-section" id="tab-activity">
-  <div class="sec-header"><div><div class="sec-title">Activity Log</div><div class="sec-sub">Every change tracked · Who did what · When</div></div></div>
-  <div class="fbar">
-    <button class="fb active" onclick="filterActivity('all',this)">All</button>
-    <button class="fb" onclick="filterActivity('zulfi',this)">Zulfi</button>
-    <button class="fb" onclick="filterActivity('afshan',this)">Afshan</button>
-    <button class="fb" onclick="filterActivity('mehwish',this)">Mehwish</button>
-    <button class="fb" onclick="filterActivity('faizan',this)">Faizan</button>
-    <button class="fb" onclick="filterActivity('seher',this)">Seher</button>
-    <button class="fb" onclick="filterActivity('hira',this)">Hira</button>
-  </div>
-  <div class="card"><div class="card-pad"><div class="activity-list" id="activity-list"><div class="empty-state">No activity yet — start planning!</div></div></div></div>
-</div>
-
 <!-- FOOTER -->
 <footer>
   <div class="footer-top">
@@ -775,7 +496,7 @@ footer{background:var(--dark);padding:3.5rem 3rem 2rem;}
     </div>
   </div>
   <div class="footer-bottom">
-    <span>Built with love for Zulfi &amp; Afshan · 2025</span>
+    <span>Built with love for Zulfi &amp; Afshan · 2026</span>
     <span>Gilgit-Baltistan, Pakistan</span>
   </div>
 </footer>
@@ -959,9 +680,7 @@ function showSync(type,msg) {
 // RENDER ALL
 // ══════════════════════════════════════════
 function renderAll() {
-  renderTimeline();renderTasks();renderGuests(guestFilt);renderBudget();
-  renderVendors();renderLocations();renderMoodboard(mbFilt);renderActivity(actFilt);
-  updateCountdown();buildCals();
+  updateCountdown();
 }
 
 // ══════════════════════════════════════════
@@ -989,6 +708,7 @@ function updateCountdown() {
   const aboutEl = document.getElementById("about-days");
   if(aboutEl) aboutEl.textContent = Math.max(0,daysOnly);
 }
+updateCountdown();
 setInterval(updateCountdown,1000);
 
 // ══════════════════════════════════════════
@@ -1394,7 +1114,6 @@ function scrollTo(id){document.querySelector(id)?.scrollIntoView({behavior:"smoo
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
-buildCals();
 renderAll();
 
 })();
